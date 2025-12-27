@@ -123,7 +123,7 @@ Access: Super Admin only
 
 Response:
 
-json
+```json
 {
   "status": "success",
   "results": 2,
@@ -134,6 +134,7 @@ json
     ]
   }
 }
+```
 ### 3.2 Get Details of a Tenant
 ### Retrieve detailed info for a tenant by ID.
 
@@ -145,13 +146,14 @@ Access: Super Admin only
 
 Response:
 
-json
+```json
 
 {
   "id": "uuid",
   "name": "Acme Corp",
   "status": "active"
 }
+```
 ### 3.3 Modify Tenant Data
 ### Update tenant information such as name or status.
 
@@ -163,12 +165,13 @@ Access: Super Admin only
 
 Request Body:
 
-json
+```json
 
 {
   "name": "Acme Global",
   "status": "inactive"
 }
+```
 ## 4. User Operations (Tenant Admin)
 ## 4.1 Get Tenant Users List
 ## Fetch all users that belong to a tenant.
@@ -181,7 +184,7 @@ Access: Tenant Admin only
 
 Response:
 
-json
+```json
 
 {
   "data": {
@@ -190,6 +193,7 @@ json
     ]
   }
 }
+```
 ## 4.2 Add a New User
 ## Create a new user under a tenant.
 
@@ -201,7 +205,7 @@ Access: Tenant Admin only
 
 Request Body:
 
-json
+```json
 
 {
   "email": "alice@acme.com",
@@ -209,6 +213,7 @@ json
   "fullName": "Alice Smith",
   "role": "user"
 }
+```
 ## 4.3 Edit User Details
 ## Update user profile info or role.
 
@@ -220,12 +225,13 @@ Access: Tenant Admin only
 
 Request Body:
 
-json
+```json
 
 {
   "fullName": "Alice Jones",
   "role": "tenant_admin"
 }
+```
 ## 4.4 Delete a User
 ## Remove a user from the tenant.
 
@@ -247,7 +253,7 @@ Access: All logged-in users (User, Admin)
 
 Response:
 
-json
+```json
 {
   "data": {
     "projects": [
@@ -255,6 +261,7 @@ json
     ]
   }
 }
+```
 ## 5.2 Create New Project
 ## Add a project inside a tenant’s scope.
 
@@ -266,12 +273,13 @@ Access: Tenant Admin only
 
 Request Body:
 
-json
+```json
 {
   "title": "Q3 Marketing Campaign",
   "description": "Planning for Q3",
   "status": "active"
 }
+```
 ## 5.3 Get Project Information
 ## Fetch detailed data about a specific project.
 
@@ -292,11 +300,12 @@ Access: Tenant Admin only
 
 Request Body:
 
-json
+```json
 
 {
   "status": "completed"
 }
+```
 Note: Project deletion is commonly done via:
 
 Method: DELETE
@@ -315,7 +324,7 @@ Access: User / Admin
 
 Response:
 
-json
+```json
 {
   "data": {
     "tasks": [
@@ -323,6 +332,7 @@ json
     ]
   }
 }
+```
 ## 6.2 Add a New Task
 ## Create a task in a project.
 
@@ -334,7 +344,7 @@ Access: Tenant Admin only
 
 Request Body:
 
-json
+```json
 
 {
   "title": "Fix Header Bug",
@@ -342,6 +352,7 @@ json
   "priority": "HIGH",
   "dueDate": "2023-12-31"
 }
+```
 ## 6.3 Change Task Status
 ## Update the status of a task quickly (for example, in Kanban views).
 
@@ -353,10 +364,11 @@ Access: User / Admin
 
 Request Body:
 
-json
+```json
 {
   "status": "IN_PROGRESS"
 }
+```
 ## 6.4 Update Task Details Fully
 Modify all task information.
 
@@ -368,9 +380,10 @@ Access: Tenant Admin only
 
 Request Body:
 
-json
+```json
 
 {
   "title": "Fix Header Bug (Updated)",
   "priority": "MEDIUM"
 }
+```
