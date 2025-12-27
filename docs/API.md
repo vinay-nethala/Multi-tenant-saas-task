@@ -73,14 +73,15 @@ Access: Public
 
 Request Body:
 
-json
+```json
 {
   "email": "admin@acme.com",
   "password": "SecurePassword123"
 }
+```
 Response (200 OK):
 
-json
+```json
 {
   "token": "<jwt-token>",
   "user": {
@@ -90,6 +91,7 @@ json
     "tenantId": "uuid"
   }
 }
+```
 ### 2.3 Get Logged-in User Info
 ### Fetch details of the currently authenticated user.
 
@@ -101,7 +103,7 @@ Access: Requires valid JWT token (all roles)
 
 Response (200 OK):
 
-json
+```json
 
 {
   "user": {
@@ -111,6 +113,7 @@ json
     "role": "user"
   }
 }
+```
 ### 3. Tenant Administration (Super Admin Access Only)
 ###3.1 Retrieve All Tenants
 Get a list of all tenants registered in the system.
