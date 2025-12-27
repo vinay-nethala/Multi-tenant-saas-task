@@ -1,83 +1,88 @@
-# Multi-Tenant SaaS Platform – API Documentation
+# Multi-Tenant SaaS Platform API Reference
 
-## Authentication & Security
+## Authentication & Security Overview
 
-- **Authentication Method:** Bearer Token (JWT)
-- **Header Format:**  
-  `Authorization: Bearer <your_jwt_token>`
-- **Token Expiry:** 24 hours
-- **Base URL (Local):**  
-  `http://localhost:5000/api`
+- **Auth method:** JWT Bearer token
+- **Header format:**
+
+Authorization: Bearer <token>
+
+
+
+- **Token valid for:** 24 hours
+- **Base URL for API (local):**
+
+http://localhost:5000/api
+
 
 ---
 
-## System
+## 1. System Health Endpoint
 
-### 1. Health Check
+Verify the backend service and database connection are active.
 
-Checks whether the API server and database connection are healthy.
+- **HTTP Method:** GET  
+- **URL:** `/health`  
+- **Access:** Public (no authentication needed)  
 
-- **Endpoint:** `GET /health`
-- **Access:** Public
-
-#### Response (200 OK)
+**Success Response (200 OK):**
 
 ```json
 {
-  "status": "ok",
-  "database": "connected"
+"status": "ok",
+"database": "connected"
 }
 ```
+### 2. User Authentication Endpoints
+### 2.1 Tenant Registration
+Register a new tenant (organization) with its first admin user.
 
-## 2. Authentication Module
+Method: POST
 
-### 2.1 Register Tenant (Sign Up)
+Route: /auth/register-tenant
 
-Registers a new **Organization (Tenant)** along with its first **Admin user**.
+Access: Public
 
-- **Endpoint:** `POST /auth/register-tenant`
-- **Access:** Public
-
-#### Request Body (JSON)
+Request Body:
 
 ```json
+
 {
   "tenantName": "Acme Corp",
   "subdomain": "acme",
   "adminEmail": "admin@acme.com",
   "password": "SecurePassword123"
 }
+```
+Response (201 Created):
 
-#### Response (201 Created)
-
-```json
+```bash
 {
   "message": "Tenant registered successfully",
   "tenantId": "uuid-string"
 }
 ```
+### 2.2 User Login
+### Authenticate existing users and receive a JWT token.
 
-### 2.2 Login
+Method: POST
 
-Authenticates a user and returns a **JWT access token**.
+Route: /auth/login
 
-- **Endpoint:** `POST /auth/login`
-- **Access:** Public
+Access: Public
 
-#### Request Body (JSON)
+Request Body:
 
-```json
+json
 {
   "email": "admin@acme.com",
   "password": "SecurePassword123"
 }
-```
+Response (200 OK):
 
-#### Response (200 OK)
-
-```json
+json
 {
-  "token": "eyJhbGciOiJIUzI1NiIsIn...",
+  "token": "<jwt-token>",
   "user": {
     "id": "uuid",
     "email": "admin@acme.com",
@@ -85,18 +90,19 @@ Authenticates a user and returns a **JWT access token**.
     "tenantId": "uuid"
   }
 }
-```
+### 2.3 Get Logged-in User Info
+### Fetch details of the currently authenticated user.
 
-### 2.3 Get Current User
+Method: GET
 
-Retrieves the profile of the currently logged-in user.
+Route: /auth/me
 
-- **Endpoint:** `GET /auth/me`
-- **Access:** Protected (All Roles)
+Access: Requires valid JWT token (all roles)
 
-#### Response (200 OK)
+Response (200 OK):
 
-```json
+json
+
 {
   "user": {
     "id": "uuid",
@@ -105,21 +111,19 @@ Retrieves the profile of the currently logged-in user.
     "role": "user"
   }
 }
-```
+### 3. Tenant Administration (Super Admin Access Only)
+###3.1 Retrieve All Tenants
+Get a list of all tenants registered in the system.
 
-## 3️. Tenant Management (Super Admin)
+Method: GET
 
-### 3.1 List All Tenants
+Route: /tenants
 
-Retrieves a list of all registered tenants.  
-Accessible only by **Super Admin** users.
+Access: Super Admin only
 
-- **Endpoint:** `GET /tenants`
-- **Access:** Super Admin
+Response:
 
-#### Response (200 OK)
-
-```json
+json
 {
   "status": "success",
   "results": 2,
@@ -130,53 +134,55 @@ Accessible only by **Super Admin** users.
     ]
   }
 }
-```
+### 3.2 Get Details of a Tenant
+### Retrieve detailed info for a tenant by ID.
 
-### 3.2 Get Tenant Details
+Method: GET
 
-Retrieves detailed information for a specific tenant.
+Route: /tenants/:id
 
-- **Endpoint:** `GET /tenants/:id`
-- **Access:** Super Admin
+Access: Super Admin only
 
-#### Response (200 OK)
+Response:
 
-```json
+json
+
 {
   "id": "uuid",
   "name": "Acme Corp",
   "status": "active"
 }
-```
+### 3.3 Modify Tenant Data
+### Update tenant information such as name or status.
 
-### 3.3 Update Tenant
+Method: PUT
 
-Updates tenant details such as name or status.
+Route: /tenants/:id
 
-- **Endpoint:** `PUT /tenants/:id`
-- **Access:** Super Admin
+Access: Super Admin only
 
-#### Request Body (JSON)
+Request Body:
 
-```json
+json
+
 {
   "name": "Acme Global",
   "status": "inactive"
 }
-```
+## 4. User Operations (Tenant Admin)
+## 4.1 Get Tenant Users List
+## Fetch all users that belong to a tenant.
 
-## 4️. User Management (Tenant Admin)
+Method: GET
 
-### 4.1 List Users
+Route: /tenants/:tenantId/users
 
-Lists all employees within the requester’s tenant.
+Access: Tenant Admin only
 
-- **Endpoint:** `GET /tenants/:tenantId/users`
-- **Access:** Tenant Admin
+Response:
 
-#### Response (200 OK)
+json
 
-```json
 {
   "data": {
     "users": [
@@ -184,63 +190,64 @@ Lists all employees within the requester’s tenant.
     ]
   }
 }
-```
+## 4.2 Add a New User
+## Create a new user under a tenant.
 
-### 4.2 Create User
+Method: POST
 
-Adds a new employee to the tenant.
+Route: /tenants/:tenantId/users
 
-- **Endpoint:** `POST /tenants/:tenantId/users`
-- **Access:** Tenant Admin
+Access: Tenant Admin only
 
-#### Request Body (JSON)
+Request Body:
 
-```json
+json
+
 {
   "email": "alice@acme.com",
   "password": "Password123",
   "fullName": "Alice Smith",
   "role": "user"
 }
-```
+## 4.3 Edit User Details
+## Update user profile info or role.
 
-### 4.3 Update User
+Method: PUT
 
-Updates an existing user’s profile or role.
+Route: /users/:id
 
-- **Endpoint:** `PUT /users/:id`
-- **Access:** Tenant Admin
+Access: Tenant Admin only
 
-#### Request Body (JSON)
+Request Body:
 
-```json
+json
+
 {
   "fullName": "Alice Jones",
   "role": "tenant_admin"
 }
-```
+## 4.4 Delete a User
+## Remove a user from the tenant.
 
-### 4.4 Delete User
+Method: DELETE
 
-Removes a user from the tenant.
+Route: /users/:id
 
-- **Endpoint:** `DELETE /users/:id`
-- **Access:** Tenant Admin
+Access: Tenant Admin only
 
----
+## 5. Project Management APIs
+## 5.1 List Projects of Tenant
+List all projects under the requesting tenant.
 
-## 5️. Project Management
+Method: GET
 
-### 5.1 List Projects
+Route: /projects
 
-Lists all projects belonging to the requester’s tenant.
+Access: All logged-in users (User, Admin)
 
-- **Endpoint:** `GET /projects`
-- **Access:** User / Admin
+Response:
 
-#### Response (200 OK)
-
-```json
+json
 {
   "data": {
     "projects": [
@@ -248,67 +255,67 @@ Lists all projects belonging to the requester’s tenant.
     ]
   }
 }
-```
+## 5.2 Create New Project
+## Add a project inside a tenant’s scope.
 
-### 5.2 Create Project
+Method: POST
 
-Creates a new project within the tenant.
+Route: /projects
 
-- **Endpoint:** `POST /projects`
-- **Access:** Admin
+Access: Tenant Admin only
 
-#### Request Body (JSON)
+Request Body:
 
-```json
+json
 {
   "title": "Q3 Marketing Campaign",
   "description": "Planning for Q3",
   "status": "active"
 }
-```
+## 5.3 Get Project Information
+## Fetch detailed data about a specific project.
 
-### 5.3 Get Project Details
+Method: GET
 
-Retrieves detailed information for a specific project.
+Route: /projects/:id
 
-- **Endpoint:** `GET /projects/:id`
-- **Access:** User / Admin
+Access: User or Admin
 
----
+## 5.4 Update Project Info
+## Modify details of a project.
 
-### 5.4 Update Project
+Method: PUT
 
-Updates an existing project’s details.
+Route: /projects/:id
 
-- **Endpoint:** `PUT /projects/:id`
-- **Access:** Admin
+Access: Tenant Admin only
 
-#### Request Body (JSON)
+Request Body:
 
-```json
+json
+
 {
   "status": "completed"
 }
-```
+Note: Project deletion is commonly done via:
 
-> **Note:**  
-> Project deletion functionality is typically mapped to  
-> `DELETE /projects/:id`
+Method: DELETE
 
----
+Route: /projects/:id
 
-## 6️. Task Management
+## 6. Task Management
+## 6.1 Retrieve Tasks for a Project
+Get all tasks under a specific project.
 
-### 6.1 List Tasks
+Method: GET
 
-Retrieves all tasks associated with a specific project.
+Route: /projects/:projectId/tasks
 
-- **Endpoint:** `GET /projects/:projectId/tasks`
-- **Access:** User / Admin
+Access: User / Admin
 
-#### Response (200 OK)
+Response:
 
-```json
+json
 {
   "data": {
     "tasks": [
@@ -316,51 +323,53 @@ Retrieves all tasks associated with a specific project.
     ]
   }
 }
-```
+## 6.2 Add a New Task
+## Create a task in a project.
 
-### 6.2 Create Task
+Method: POST
 
-Creates a new task within a specific project.
+Route: /projects/:projectId/tasks
 
-- **Endpoint:** `POST /projects/:projectId/tasks`
-- **Access:** Admin
+Access: Tenant Admin only
 
-#### Request Body (JSON)
+Request Body:
 
-```json
+json
+
 {
   "title": "Fix Header Bug",
   "description": "CSS issue on mobile",
   "priority": "HIGH",
   "dueDate": "2023-12-31"
 }
-```
+## 6.3 Change Task Status
+## Update the status of a task quickly (for example, in Kanban views).
 
-### 6.3 Update Task Status
+Method: PATCH
 
-Quickly update a task’s status (e.g., via Kanban drag-and-drop).
+Route: /tasks/:id/status
 
-- **Endpoint:** `PATCH /tasks/:id/status`
-- **Access:** User / Admin
+Access: User / Admin
 
-#### Request Body (JSON)
+Request Body:
 
-```json
+json
 {
   "status": "IN_PROGRESS"
 }
-```
+## 6.4 Update Task Details Fully
+Modify all task information.
 
-### 6.4 Update Task Details
+Method: PUT
 
-Performs a full update of a task’s information.
+Route: /tasks/:id
 
-- **Endpoint:** `PUT /tasks/:id`
-- **Access:** Admin
+Access: Tenant Admin only
 
-#### Request Body (JSON)
+Request Body:
 
-```json
+json
+
 {
   "title": "Fix Header Bug (Updated)",
   "priority": "MEDIUM"
