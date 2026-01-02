@@ -152,9 +152,6 @@ PostgreSQL Database
 
 ---
 
-## ✅ Summary
 
-The architecture follows **industry best practices** for modern SaaS platforms, ensuring security, scalability, and clean separation of concerns while remaining simple and easy to understand for evaluation.
 
----
 
