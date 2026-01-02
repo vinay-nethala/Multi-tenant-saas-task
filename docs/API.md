@@ -178,4 +178,3 @@ Returns all tasks for the logged-in tenant.
 * PostgreSQL
 
 ---
-
