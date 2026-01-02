@@ -145,4 +145,3 @@ Based on research, the project was designed to:
 * Remain easy to deploy and evaluate
 
 ---
-
