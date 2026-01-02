@@ -110,4 +110,3 @@ The **Multi-Tenant SaaS Platform** is a secure, scalable web application that al
 This project demonstrates a **real-world SaaS architecture** with multi-tenancy, security, and role-based access. It is designed to meet **industry standards** and is suitable for **internship evaluations and production-ready deployments**.
 
 ---
-
