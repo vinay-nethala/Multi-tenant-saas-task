@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="800" viewBox="0 0 1400 800">
+  <style>.tbl{fill:#fff;stroke:#111827;stroke-width:1.2;} .th{font:14px sans-serif;font-weight:700;fill:#0f172a;} .td{font:13px sans-serif;fill:#111827;} .rel{stroke:#111827;stroke-width:1.6;marker-end:url(#arr);} </style>
+  <defs>
+    <marker id="arr" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#111827"/></marker>
+  </defs>
+  <text x="20" y="30" class="th">Database ERD (tables & relationships)</text>
+
+  <!-- Tenants -->
+  <rect x="40" y="60" width="300" height="120" rx="6" class="tbl"/>
+  <text x="60" y="90" class="th">tenants</text>
+  <text x="60" y="112" class="td">id (PK)</text>
+  <text x="60" y="130" class="td">subdomain (unique)</text>
+  <text x="60" y="148" class="td">plan, max_users, max_projects</text>
+
+  <!-- Users -->
+  <rect x="420" y="60" width="320" height="160" rx="6" class="tbl"/>
+  <text x="440" y="90" class="th">users</text>
+  <text x="440" y="112" class="td">id (PK)</text>
+  <text x="440" y="130" class="td">tenant_id (FK → tenants.id)</text>
+  <text x="440" y="148" class="td">email, password_hash, role</text>
+
+  <!-- Projects -->
+  <rect x="40" y="240" width="320" height="120" rx="6" class="tbl"/>
+  <text x="60" y="270" class="th">projects</text>
+  <text x="60" y="292" class="td">id (PK)</text>
+  <text x="60" y="310" class="td">tenant_id (FK → tenants.id)</text>
+  <text x="60" y="328" class="td">name, status, created_by</text>
+
+  <!-- Tasks -->
+  <rect x="420" y="260" width="360" height="160" rx="6" class="tbl"/>
+  <text x="440" y="290" class="th">tasks</text>
+  <text x="440" y="312" class="td">id (PK)</text>
+  <text x="440" y="330" class="td">project_id (FK → projects.id)</text>
+  <text x="440" y="348" class="td">tenant_id (FK → tenants.id)</text>
+  <text x="440" y="366" class="td">assigned_to (FK → users.id), status</text>
+
+  <!-- Audit Logs -->
+  <rect x="820" y="60" width="380" height="120" rx="6" class="tbl"/>
+  <text x="840" y="90" class="th">audit_logs</text>
+  <text x="840" y="112" class="td">id (PK)</text>
+  <text x="840" y="130" class="td">tenant_id (FK), user_id (FK)</text>
+  <text x="840" y="148" class="td">action, entity_type, entity_id, created_at</text>
+
+  <!-- Sessions -->
+  <rect x="820" y="220" width="380" height="120" rx="6" class="tbl"/>
+  <text x="840" y="250" class="th">sessions</text>
+  <text x="840" y="272" class="td">id (PK)</text>
+  <text x="840" y="290" class="td">user_id (FK), tenant_id (FK)</text>
+  <text x="840" y="308" class="td">refresh_token, is_revoked</text>
+
+  <!-- Relationships -->
+  <path d="M340,120 L420,120" class="rel" />
+  <path d="M200,300 L200,240 L420,300" class="rel" />
+  <path d="M620,320 L820,300" class="rel" />
+  <path d="M560,120 L820,120" class="rel" />
+
+  <text x="360" y="110" class="td">1-to-many</text>
+</svg>

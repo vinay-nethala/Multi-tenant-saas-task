@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="600" viewBox="0 0 1200 600">
+  <style> .box{fill:#f3f4f6;stroke:#111827;stroke-width:1.5;} .label{font:14px sans-serif;fill:#111827;} .title{font:18px sans-serif;fill:#0f172a;font-weight:700;} .arrow{stroke:#111827;stroke-width:2;fill:none;marker-end:url(#arrow);} </style>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#111827" />
+    </marker>
+  </defs>
+  <text x="20" y="30" class="title">System Architecture</text>
+
+  <!-- Browser -->
+  <rect x="40" y="80" width="220" height="100" rx="8" class="box"/>
+  <text x="60" y="110" class="label">Browser / React SPA</text>
+  <text x="60" y="130" class="label">(frontend)</text>
+
+  <!-- Nginx / Frontend -->
+  <rect x="320" y="60" width="200" height="140" rx="8" class="box"/>
+  <text x="340" y="100" class="label">Nginx (Frontend container)</text>
+  <text x="340" y="120" class="label">serves static SPA</text>
+
+  <!-- Backend -->
+  <rect x="560" y="60" width="220" height="140" rx="8" class="box"/>
+  <text x="580" y="100" class="label">Express API (Backend)</text>
+  <text x="580" y="120" class="label">JWT auth, RBAC, tenant logic</text>
+
+  <!-- Database -->
+  <rect x="860" y="80" width="260" height="120" rx="8" class="box"/>
+  <text x="880" y="110" class="label">PostgreSQL</text>
+  <text x="880" y="130" class="label">(shared DB, shared schema)</text>
+
+  <!-- Arrows -->
+  <path d="M260,130 L320,130" class="arrow"/>
+  <path d="M520,130 L560,130" class="arrow"/>
+  <path d="M780,130 L860,130" class="arrow"/>
+
+  <!-- Auth Flow -->
+  <text x="420" y="40" class="label">User requests -> Nginx proxies / serves</text>
+  <text x="680" y="40" class="label">API verifies JWT, extracts tenant_id</text>
+
+  <!-- Notes box -->
+  <rect x="40" y="220" width="1080" height="110" rx="8" fill="#ffffff" stroke="#e5e7eb"/>
+  <text x="60" y="250" class="label">Notes: Row-level tenant isolation is enforced by including `tenant_id` from the JWT on all queries. Audit logs recorded to `audit_logs`.</text>
+</svg>
