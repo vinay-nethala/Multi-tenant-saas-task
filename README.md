@@ -29,7 +29,7 @@ The system follows a containerized 3-tier architecture:
 2.  **Backend Container (Port 5000):** Node.js API handling business logic.
 3.  **Database Container (Port 5432):** PostgreSQL with persistent volume storage.
 
-**[View System Architecture Diagram](docs/images/system-architecture.svg)** | **[View Database Schema (ERD)](docs/images/database-erd.svg)**
+
 
 ---
 
@@ -87,8 +87,4 @@ Detailed documentation is available in the `docs/` folder:
 * **[Technical Specification](docs/technical-spec.md):** Folder structure and environment setup guide.
 * **[API Documentation](docs/API.md):** List of all 22 API endpoints.
 
-## 🎥 Demo Video
 
-**[Click Here to Watch the Demo Video on YouTube]https://drive.google.com/file/d/1UYYZsq9O2-54fuNK0-wH_gtiZBYErxxD/view?usp=sharing**
-
----
